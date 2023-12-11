@@ -65,8 +65,6 @@ export default function StudentDetails({filename}) {
 
   const navigate = useNavigate();
   const [review, setReview] = useState(false);
-  // console.log(file);
-  // console.log("File name ", file.name)
 
   //Review Part
 
@@ -93,13 +91,13 @@ export default function StudentDetails({filename}) {
 
   const handleStudentDetailsNext = () => {
     navigate("/student/high-school/payment");
-    // const formData = new FormData();
-    // formData.append("file", file);
+    const formData = new FormData();
+    formData.append("file", file);
 
-    // axios
-    //   .post("http://localhost:8080/uploadPhoto", formData)
-    //   .then((res) => setImageName(res.data))
-    //   .catch((err) => console.log(err));
+    axios
+      .post("http://localhost:8080/uploadPhoto", formData)
+      .then((res) => console.log(res.data))
+      .catch((err) => console.log(err));
 
     axios
       .post("http://localhost:8080/student_personal_details", {
@@ -167,71 +165,51 @@ export default function StudentDetails({filename}) {
          console.log("Image ", imageUrl)
       })
       .catch((err) => console.log(err));
-    // if(sscBoard.length <= 0) {
-    //   alert("SSC Board Type is required");
-    // }
-    // else if(sscType.length <= 0) {
-    //   alert("SSC Type is required");
-    // }
-    // else if(sscPassYear.length <= 0) {
-    //   alert("SSC Pass Year is required");
-    // }
-    // else if(sscHallTicket.length <= 0) {
-    //   alert("SSC Hall Ticket is required");
-    // }
-    // else if(dob.length <= 0) {
-    //   alert("Date of Birth is required");
-    // }
-    // else if(name.length <= 0) {
-    //   alert("Name is required");
-    // }
-    // else if(fatherName.length <= 0) {
-    //   alert("Father name is required");
-    // }
-    // else if(gender.length <= 0) {
-    //   alert("Gender is required");
-    // }
-    // else if(mobileNo.length <= 0) {
-    //   alert("Mobile number is required");
-    // }
-    // else if(districtInstitution.length <= 0) {
-    //   alert("Institution District is required");
-    // }
-    // else if(mandalInstitution.length <= 0) {
-    //   alert("Institution Mandal is required");
-    // }
-    // else if(institutionname.length <= 0) {
-    //   alert("Institution Name is required");
-    // }
-    // else if(coursename.length <= 0) {
-    //   alert("Course name is required");
-    // }
-    // else if(admissionnumber.length <= 0) {
-    //   alert("Admission Number is required");
-    // } else {
+    if(sscBoard.length <= 0) {
+      alert("SSC Board Type is required");
+    }
+    else if(sscType.length <= 0) {
+      alert("SSC Type is required");
+    }
+    else if(sscPassYear.length <= 0) {
+      alert("SSC Pass Year is required");
+    }
+    else if(sscHallTicket.length <= 0) {
+      alert("SSC Hall Ticket is required");
+    }
+    else if(dob.length <= 0) {
+      alert("Date of Birth is required");
+    }
+    else if(name.length <= 0) {
+      alert("Name is required");
+    }
+    else if(fatherName.length <= 0) {
+      alert("Father name is required");
+    }
+    else if(gender.length <= 0) {
+      alert("Gender is required");
+    }
+    else if(mobileNo.length <= 0) {
+      alert("Mobile number is required");
+    }
+    else if(districtInstitution.length <= 0) {
+      alert("Institution District is required");
+    }
+    else if(mandalInstitution.length <= 0) {
+      alert("Institution Mandal is required");
+    }
+    else if(institutionname.length <= 0) {
+      alert("Institution Name is required");
+    }
+    else if(coursename.length <= 0) {
+      alert("Course name is required");
+    }
+    else if(admissionnumber.length <= 0) {
+      alert("Admission Number is required");
+    } else {
       setReview(true);
-    // }
+    }
   }
-
-  // const [imageUrl, setImageUrl] = useState('');
-
-  // useEffect(() => {
-  //   // const fetchImage = async () => {
-  //   //   try {
-  //   //     const response = await axios.get(`http://localhost:8080/image_retrieve/${file.filename}`);
-
-  //   //     setImageData(response.data);
-  //   //   } catch (error) {
-  //   //     console.error('Error fetching image:', error);
-  //   //   }
-  //   // };
-
-  //   // fetchImage();
-  //   axios.get(`http://localhost:8080/getImage`)
-  //   .then((res) => setImage(res.data[0].image))
-  //   .catch((err) => console.log(err))
-    
-  // }, []);
 
   return (
     <React.Fragment>
