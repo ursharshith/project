@@ -1,0 +1,140 @@
+h3{
+    text-align: center;
+    margin-bottom: 40px;
+    color: #777;
+}
+.apply-container {
+    width: 720px;
+    height: 100vh;
+    margin: 8% auto;
+    background: #fff;
+    border-radius: 5px;
+    position: relative;
+    overflow: hidden;
+}
+
+.apply-container form {
+    width: 360px;
+    position: absolute;
+    top: 100px;
+    left: 162px;
+    transition: 0.5s;
+}
+
+form input {
+    width: 100%;
+    padding: 10px 5px;
+    margin: 5px 0;
+    border: 0;
+    border-bottom: 1px solid #999;
+    outline: none;
+    background: transparent;
+}
+
+::placeholder {
+    color: #777;
+}
+
+.btn-box{
+    width: 100%;
+    margin: 30px auto;
+    text-align: center;
+}
+
+form button {
+    width: 110px;
+    height: 35px;
+    margin: 0 10px;
+    background: linear-gradient(to right, #ff105f, #ffad06);
+    border-radius: 30px;
+    border: 0;
+    outline: none;
+    color: #fff;
+    cursor: pointer;
+}
+
+#Form2{
+    left: 720px;
+}
+
+#Form3{
+    left: 720px;
+}
+
+#progress{
+    position: absolute;
+    height: 100%;
+    width: 240px;
+    background: linear-gradient(to right, #ff105f, #ffad06);
+    transition: 1s;
+}
+
+#progress::after {
+    content: '';
+    height: 0;
+    width: 0;
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+    position: absolute;
+    right: -20px;
+    top: 0;
+    border-left: 20px solid #ffad06;
+}
+
+.step-row{
+    width: 720px;
+    height: 40px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 -1px 5px -1px #000;
+    position: relative;
+}
+
+.step-col{
+    width: 240px;
+    text-align: center;
+    color: #333;
+    position: relative;
+}
+
+
+/* ********USER PORTAL******** */
+.user-portal-main-div {
+    /* width: 100%; */
+    background-color: blue;
+}
+.user-portal-side-div {
+    /* width: 200px;
+    height: 100vh;
+    background-color: #000;
+    position: absolute; */
+    /* width: 50%;
+    display: inline-block;
+    background-color: #f0f0f0;
+    padding: 10px;
+    box-sizing: border-box; */
+    width: 180px;
+    /* flex: 1; Grow to take available space */
+    height: 100vh;
+    /* box-sizing: border-box; */
+}
+
+.user-portal-side-div h3 {
+    cursor: pointer;
+}
+
+.user-portal-content-div{
+    /* width: 50%;
+    display: inline-block;
+    background-color: #c0c0c0;
+    padding: 10px;
+    box-sizing: border-box; */
+    flex: 1; /* Grow to take available space */
+    background-color: #F5F5F5;
+    box-sizing: border-box;
+}
+
+.apply-pass-sub h3{
+    cursor: pointer;
+}
