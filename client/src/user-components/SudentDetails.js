@@ -3,11 +3,12 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import { Button, Input, MenuItem } from "@mui/material";
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "../style.css";
 
-export default function StudentDetails({filename}) {
+export default function StudentDetails({ filename }) {
   // const [showAmount, setShowAmount] = useState(false);
   // const [routeDetails, setRouteDetails] = useState([]);
   // const [routeAmount, setRouteAmount] = useState(0);
@@ -46,7 +47,7 @@ export default function StudentDetails({filename}) {
   const [email, setEmail] = useState("");
   const [aadhar, setAadhar] = useState("");
   const [file, setFile] = useState();
-  const [imageUrl, setImageUrl] = useState(); 
+  const [imageUrl, setImageUrl] = useState();
 
   //Residential Adress Details
   const [district, setDistrict] = useState("");
@@ -115,6 +116,7 @@ export default function StudentDetails({filename}) {
 
     axios
       .post("http://localhost:8080/student_study_details", {
+        email,
         sscBoard,
         sscType,
         sscPassYear,
@@ -136,7 +138,7 @@ export default function StudentDetails({filename}) {
       .catch((err) => console.log(err));
 
     axios
-      .post("http://localhost:8080/institution_details", {
+      .post("http://localhost:8080/institution_detail", {
         districtInstitution,
         mandalInstitution,
         institutionname,
@@ -146,105 +148,92 @@ export default function StudentDetails({filename}) {
       })
       .then((res) => {})
       .catch((err) => console.log(err));
+
+    axios
+      .post("http://localhost:8080/applicaiton_emails", {
+        email,
+      })
+      .then((res) => {})
+      .catch((err) => console.log(err));
   };
 
   const handleEdit = () => {
     setReview(false);
-  }
+  };
 
   const handleNextPreview = () => {
-    const formData = new FormData();
-    formData.append("file", file);
+    // const formData = new FormData();
+    // formData.append("file", file);
 
-    axios
-      .post("http://localhost:8080/uploadPhoto", formData)
-      .then((res) =>{
-         console.log(res)
-         setImageUrl(res.data)
-         console.log(res.data.image)
-         console.log("Image ", imageUrl)
-      })
-      .catch((err) => console.log(err));
-    if(sscBoard.length <= 0) {
+    // axios
+    //   .post("http://localhost:8080/uploadPhoto", formData)
+    //   .then((res) =>{
+    //      console.log(res)
+    //      setImageUrl(res.data)
+    //      console.log(res.data.image)
+    //      console.log("Image ", imageUrl)
+    //   })
+    //   .catch((err) => console.log(err));
+    if (sscBoard.length <= 0) {
       alert("SSC Board Type is required");
-    }
-    else if(sscType.length <= 0) {
+    } else if (sscType.length <= 0) {
       alert("SSC Type is required");
-    }
-    else if(sscPassYear.length <= 0) {
+    } else if (sscPassYear.length <= 0) {
       alert("SSC Pass Year is required");
-    }
-    else if(sscHallTicket.length <= 0) {
+    } else if (sscHallTicket.length <= 0) {
       alert("SSC Hall Ticket is required");
-    }
-    else if(dob.length <= 0) {
+    } else if (dob.length <= 0) {
       alert("Date of Birth is required");
-    }
-    else if(name.length <= 0) {
+    } else if (name.length <= 0) {
       alert("Name is required");
-    }
-    else if(fatherName.length <= 0) {
+    } else if (fatherName.length <= 0) {
       alert("Father name is required");
-    }
-    else if(gender.length <= 0) {
+    } else if (gender.length <= 0) {
       alert("Gender is required");
-    }
-    else if(mobileNo.length <= 0) {
+    } else if (mobileNo.length <= 0) {
       alert("Mobile number is required");
-    }
-    else if(districtInstitution.length <= 0) {
+    } else if (districtInstitution.length <= 0) {
       alert("Institution District is required");
-    }
-    else if(mandalInstitution.length <= 0) {
+    } else if (mandalInstitution.length <= 0) {
       alert("Institution Mandal is required");
-    }
-    else if(institutionname.length <= 0) {
+    } else if (institutionname.length <= 0) {
       alert("Institution Name is required");
-    }
-    else if(coursename.length <= 0) {
+    } else if (coursename.length <= 0) {
       alert("Course name is required");
-    }
-    else if(admissionnumber.length <= 0) {
+    } else if (admissionnumber.length <= 0) {
       alert("Admission Number is required");
     } else {
       setReview(true);
     }
-  }
+  };
 
   return (
-    <React.Fragment>
+    <div className="student-details-div">
       {!review ? (
-        <div
-          style={{
-            backgroundColor: "white",
-            margin: "auto",
-            width: "80%",
-            padding: "10px",
-          }}
-        >
+        <div className="main-sub-div">
           <Typography component="h1" variant="h4" align="center">
-            Student PASS Apply
+            STUDENT PASS Apply
           </Typography>
           <hr />
           <Typography
             variant="h6"
             gutterBottom
-            style={{ marginBottom: "10px" }}
+            style={{ margin: "20px 0", fontSize: "20px" }}
           >
-            <spam>Student 10th Details</spam>
+            <spam>Student Education Details</spam>
           </Typography>
-          <div style={{ marginLeft: "15px", marginRight: "15px" }}>
+          <div className="sub-divs">
             <Grid container spacing={3}>
               <Grid item xs={12} sm={6}>
                 <TextField
                   required
                   select
-                  id="sscBoard"
-                  name="sscBoard"
-                  label="SSC Board Type"
+                  id="board"
+                  name="board"
+                  label="Education Board Type"
                   fullWidth
                   autoComplete="given-name"
-                  variant="standard"
+                  variant="outlined"
                   onChange={(e) => setSSCBoard(e.target.value)}
                 >
                   <MenuItem value="oprion1">oprion1</MenuItem>
@@ -256,12 +245,12 @@ export default function StudentDetails({filename}) {
                 <TextField
                   required
                   select
-                  id="sscType"
-                  name="sscType"
-                  label="SSC Type"
+                  id="type"
+                  name="type"
+                  label="Education Type"
                   fullWidth
                   autoComplete="family-name"
-                  variant="standard"
+                  variant="outlined"
                   onChange={(e) => setSSCType(e.target.value)}
                 >
                   <MenuItem value="Regular">Regular</MenuItem>
@@ -271,24 +260,24 @@ export default function StudentDetails({filename}) {
               <Grid item xs={12} sm={6}>
                 <TextField
                   required
-                  id="sscPassYear"
-                  name="sscPassYear"
-                  label="SSC Pass Year"
+                  id="passYear"
+                  name="passYear"
+                  label="Pass Year"
                   fullWidth
                   autoComplete="shipping address-line1"
-                  variant="standard"
+                  variant="outlined"
                   onChange={(e) => setSSCPassYear(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
                   required
-                  id="sscHallTicket"
-                  name="sscHallTicket"
-                  label="SSC Hall Ticket no"
+                  id="hallTicket"
+                  name="hallTicket"
+                  label="Hall Ticket no"
                   fullWidth
                   autoComplete="shipping address-line2"
-                  variant="standard"
+                  variant="outlined"
                   onChange={(e) => setSSCHallTicket(e.target.value)}
                 />
               </Grid>
@@ -301,7 +290,7 @@ export default function StudentDetails({filename}) {
                   type="Date"
                   fullWidth
                   autoComplete="shipping address-level2"
-                  variant="standard"
+                  variant="outlined"
                   onChange={(e) => setDOB(e.target.value)}
                   InputLabelProps={{
                     shrink: true,
@@ -310,14 +299,19 @@ export default function StudentDetails({filename}) {
               </Grid>
             </Grid>
           </div>
+          <hr />
           <Typography
             variant="h6"
             gutterBottom
-            style={{ marginTop: "40px", marginBottom: "10px" }}
+            style={{
+              marginTop: "40px",
+              marginBottom: "20px",
+              fontSize: "20px",
+            }}
           >
             <spam>Student Details</spam>
           </Typography>
-          <div style={{ marginLeft: "15px", marginRight: "15px" }}>
+          <div className="sub-divs">
             <Grid container spacing={3}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -327,7 +321,7 @@ export default function StudentDetails({filename}) {
                   label="Name"
                   fullWidth
                   autoComplete="given-name"
-                  variant="standard"
+                  variant="outlined"
                   onChange={(e) => setName(e.target.value)}
                 />
               </Grid>
@@ -339,7 +333,7 @@ export default function StudentDetails({filename}) {
                   label="Father/Guardian's Name"
                   fullWidth
                   autoComplete="family-name"
-                  variant="standard"
+                  variant="outlined"
                   onChange={(e) => setFatherName(e.target.value)}
                 />
               </Grid>
@@ -352,7 +346,7 @@ export default function StudentDetails({filename}) {
                   type="date"
                   fullWidth
                   autoComplete="shipping address-level2"
-                  variant="standard"
+                  variant="outlined"
                   InputLabelProps={{
                     shrink: true,
                   }}
@@ -367,12 +361,13 @@ export default function StudentDetails({filename}) {
                   label="Gender"
                   fullWidth
                   autoComplete="given-name"
-                  variant="standard"
+                  variant="outlined"
                   onChange={(e) => setGender(e.target.value)}
                 >
                   {/* <MenuItem value="">SSC Board Type</MenuItem> */}
                   <MenuItem value="Male">Male</MenuItem>
                   <MenuItem value="Female">Female</MenuItem>
+                  <MenuItem value="Female">Other</MenuItem>
                 </TextField>
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -382,7 +377,7 @@ export default function StudentDetails({filename}) {
                   label="Age"
                   fullWidth
                   autoComplete="family-name"
-                  variant="standard"
+                  variant="outlined"
                   onChange={(e) => setAge(e.target.value)}
                 />
               </Grid>
@@ -393,7 +388,7 @@ export default function StudentDetails({filename}) {
                   label="Aadhar"
                   fullWidth
                   autoComplete="family-name"
-                  variant="standard"
+                  variant="outlined"
                   onChange={(e) => setAadhar(e.target.value)}
                 />
               </Grid>
@@ -406,7 +401,7 @@ export default function StudentDetails({filename}) {
                   label="Mobile No"
                   fullWidth
                   autoComplete="family-name"
-                  variant="standard"
+                  variant="outlined"
                   onChange={(e) => setMobileNo(e.target.value)}
                 />
               </Grid>
@@ -417,7 +412,7 @@ export default function StudentDetails({filename}) {
                   label="Email"
                   fullWidth
                   autoComplete="family-name"
-                  variant="standard"
+                  variant="outlined"
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </Grid>
@@ -430,7 +425,7 @@ export default function StudentDetails({filename}) {
                   type="file"
                   fullWidth
                   autoComplete="family-name"
-                  variant="standard"
+                  variant="outlined"
                   onChange={(e) => setFile(e.target.files[0])}
                   InputLabelProps={{
                     shrink: true,
@@ -439,14 +434,19 @@ export default function StudentDetails({filename}) {
               </Grid>
             </Grid>
           </div>
+          <hr />
           <Typography
             variant="h6"
             gutterBottom
-            style={{ marginTop: "40px", marginBottom: "10px" }}
+            style={{
+              marginTop: "40px",
+              marginBottom: "20px",
+              fontSize: "20px",
+            }}
           >
             <spam>Residential Address Details</spam>
           </Typography>
-          <div style={{ marginLeft: "15px", marginRight: "15px" }}>
+          <div className="sub-divs">
             <Grid container spacing={3}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -457,7 +457,7 @@ export default function StudentDetails({filename}) {
                   label="District"
                   fullWidth
                   autoComplete="given-name"
-                  variant="standard"
+                  variant="outlined"
                   onChange={(e) => setDistrict(e.target.value)}
                 >
                   {/* <MenuItem value="">SSC Board Type</MenuItem> */}
@@ -476,7 +476,7 @@ export default function StudentDetails({filename}) {
                   label="Mandal"
                   fullWidth
                   autoComplete="given-name"
-                  variant="standard"
+                  variant="outlined"
                   onChange={(e) => setMandal(e.target.value)}
                 >
                   {/* <MenuItem value="">SSC Board Type</MenuItem> */}
@@ -493,7 +493,7 @@ export default function StudentDetails({filename}) {
                   label="Village"
                   fullWidth
                   autoComplete="family-name"
-                  variant="standard"
+                  variant="outlined"
                   onChange={(e) => setVillage(e.target.value)}
                 />
               </Grid>
@@ -505,7 +505,7 @@ export default function StudentDetails({filename}) {
                   label="Address(complete address)"
                   fullWidth
                   autoComplete="family-name"
-                  variant="standard"
+                  variant="outlined"
                   onChange={(e) => setAddress(e.target.value)}
                 />
               </Grid>
@@ -517,20 +517,25 @@ export default function StudentDetails({filename}) {
                   label="Postal Code"
                   fullWidth
                   autoComplete="family-name"
-                  variant="standard"
+                  variant="outlined"
                   onChange={(e) => setPostalCode(e.target.value)}
                 />
               </Grid>
             </Grid>
           </div>
+          <hr />
           <Typography
             variant="h6"
             gutterBottom
-            style={{ marginTop: "40px", marginBottom: "10px" }}
+            style={{
+              marginTop: "40px",
+              marginBottom: "20px",
+              fontSize: "20px",
+            }}
           >
             Institution Details
           </Typography>
-          <div style={{ marginLeft: "15px", marginRight: "15px" }}>
+          <div className="sub-divs">
             <Grid container spacing={3}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -541,7 +546,7 @@ export default function StudentDetails({filename}) {
                   label="District"
                   fullWidth
                   autoComplete="given-name"
-                  variant="standard"
+                  variant="outlined"
                   onChange={(e) => setDistrictInstitution(e.target.value)}
                 >
                   <MenuItem value="Sangareddy">Sangareddy</MenuItem>
@@ -558,7 +563,7 @@ export default function StudentDetails({filename}) {
                   label="Mandal"
                   fullWidth
                   autoComplete="given-name"
-                  variant="standard"
+                  variant="outlined"
                   onChange={(e) => setMandalInstitution(e.target.value)}
                 >
                   <MenuItem value="Nrayankhed">Nrayankhed</MenuItem>
@@ -574,7 +579,7 @@ export default function StudentDetails({filename}) {
                   label="Institution Name"
                   fullWidth
                   autoComplete="family-name"
-                  variant="standard"
+                  variant="outlined"
                   onChange={(e) => setInstitutionName(e.target.value)}
                 />
               </Grid>
@@ -587,7 +592,7 @@ export default function StudentDetails({filename}) {
                   label="Course Name"
                   fullWidth
                   autoComplete="given-name"
-                  variant="standard"
+                  variant="outlined"
                   onChange={(e) => setCourseName(e.target.value)}
                 >
                   <MenuItem value="Course A">Nrayankhed</MenuItem>
@@ -603,7 +608,7 @@ export default function StudentDetails({filename}) {
                   label="Admission Number"
                   fullWidth
                   autoComplete="family-name"
-                  variant="standard"
+                  variant="outlined"
                   onChange={(e) => setAdmissionNumber(e.target.value)}
                 />
               </Grid>
@@ -614,24 +619,41 @@ export default function StudentDetails({filename}) {
                   label="Address(complete address)"
                   fullWidth
                   autoComplete="family-name"
-                  variant="standard"
+                  variant="outlined"
                   onChange={(e) => setAddressInstitution(e.target.value)}
                 />
               </Grid>
-              <Grid item xs={12} sm={12}>
-                <Button type="text" onClick={handleNextPreview}>
-                  Next To Preview
-                </Button>
-              </Grid>
             </Grid>
           </div>
+          <Button
+            type="text"
+            onClick={handleNextPreview}
+            variant="contained"
+            style={{ marginBottom: "5px" }}
+          >
+            Next To Preview
+          </Button>
         </div>
       ) : (
-        <div style={{textAlign:"left", display:"flex", flexDirection:"column", borderRadius:"10px", backgroundColor:"white", height:"90vh", padding:"25px"}}>
+        <div
+          style={{
+            textAlign: "left",
+            display: "flex",
+            flexDirection: "column",
+            borderRadius: "10px",
+            backgroundColor: "white",
+            height: "90vh",
+            padding: "25px",
+          }}
+        >
           <Typography
             variant="h6"
             gutterBottom
-            style={{ marginTop: "10px", marginBottom: "40px", textAlign:"center" }}
+            style={{
+              marginTop: "10px",
+              marginBottom: "40px",
+              textAlign: "center",
+            }}
           >
             <spam>APPLICATION</spam>
           </Typography>
@@ -643,63 +665,147 @@ export default function StudentDetails({filename}) {
           />
           )}
           </div> */}
-            <div style={{display:"flex", flex:1}}>
-            <div style={{flex:1}}>
-            <table>
+          <div style={{ display: "flex", flex: 1 }}>
+            <div style={{ flex: 1 }}>
+              <table>
+                <tbody>
+                  <th>SSC 10th Details</th>
+                  <tr>
+                    <td>SSC Board </td>
+                    <td>{sscBoard}</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      SSC(Regular/
+                      <br />
+                      Supplimentary){" "}
+                    </td>
+                    <td>{sscType}</td>
+                  </tr>
+                  <tr>
+                    <td>SSC Pass Year </td>
+                    <td>{sscPassYear}</td>
+                  </tr>
+                  <tr>
+                    <td>SSC Hall Ticket </td>
+                    <td>{sscHallTicket}</td>
+                  </tr>
+                  <tr>
+                    <td>Date of Birth </td>
+                    <td>{dob}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style={{ flex: 1 }}>
               <tbody>
-                <th>SSC 10th Details</th>
-                <tr><td>SSC Board  </td><td>{sscBoard}</td></tr>
-                <tr><td>SSC(Regular/<br/>Supplimentary)  </td><td>{sscType}</td></tr>
-                <tr><td>SSC Pass Year  </td><td>{sscPassYear}</td></tr>
-                <tr><td>SSC Hall Ticket  </td><td>{sscHallTicket}</td></tr>
-                <tr><td>Date of Birth  </td><td>{dob}</td></tr>
-              </tbody>
-            </table>
-            </div>
-            <div style={{flex:1}}>
-            <tbody>
                 <th>Student Details</th>
-                <tr><td>Name  </td><td>{name}</td></tr>
-                <tr><td>Father/<br/>Guardian Name   </td><td>{fatherName}</td></tr>
-                <tr><td>Date of Birth  </td><td>{dob}</td></tr>
-                <tr><td>Gender  </td><td>{gender}</td></tr>
-                <tr><td>Age  </td><td>{age}</td></tr>
-                <tr><td>Aadhar  </td><td>{aadhar}</td></tr>
-                <tr><td>Mobile  </td><td>{mobileNo}</td></tr>
-                <tr><td>Email</td><td>{email}</td></tr>
+                <tr>
+                  <td>Name </td>
+                  <td>{name}</td>
+                </tr>
+                <tr>
+                  <td>
+                    Father/
+                    <br />
+                    Guardian Name{" "}
+                  </td>
+                  <td>{fatherName}</td>
+                </tr>
+                <tr>
+                  <td>Date of Birth </td>
+                  <td>{dob}</td>
+                </tr>
+                <tr>
+                  <td>Gender </td>
+                  <td>{gender}</td>
+                </tr>
+                <tr>
+                  <td>Age </td>
+                  <td>{age}</td>
+                </tr>
+                <tr>
+                  <td>Aadhar </td>
+                  <td>{aadhar}</td>
+                </tr>
+                <tr>
+                  <td>Mobile </td>
+                  <td>{mobileNo}</td>
+                </tr>
+                <tr>
+                  <td>Email</td>
+                  <td>{email}</td>
+                </tr>
               </tbody>
             </div>
-            </div>
-            <div style={{display:"flex", flex:1}}>
-            <div style={{flex:1}}>
-            <tbody>
+          </div>
+          <div style={{ display: "flex", flex: 1 }}>
+            <div style={{ flex: 1 }}>
+              <tbody>
                 <th>Residential Address Details</th>
-                <tr><td>District  </td><td>{district}</td></tr>
-                <tr><td>Mandal  </td><td>{mandal}</td></tr>
-                <tr><td>Village  </td><td>{village}</td></tr>
-                <tr><td>Address  </td><td>{address}</td></tr>
-                <tr><td>postalCode  </td><td>{postalCode}</td></tr>
+                <tr>
+                  <td>District </td>
+                  <td>{district}</td>
+                </tr>
+                <tr>
+                  <td>Mandal </td>
+                  <td>{mandal}</td>
+                </tr>
+                <tr>
+                  <td>Village </td>
+                  <td>{village}</td>
+                </tr>
+                <tr>
+                  <td>Address </td>
+                  <td>{address}</td>
+                </tr>
+                <tr>
+                  <td>postalCode </td>
+                  <td>{postalCode}</td>
+                </tr>
               </tbody>
             </div>
-            <div style={{flex:1}}>
-            <tbody>
+            <div style={{ flex: 1 }}>
+              <tbody>
                 <th>Institution Details</th>
-                <tr><td>District  </td><td>{districtInstitution}</td></tr>
-                <tr><td>Mandal   </td><td>{mandal}</td></tr>
-                <tr><td>Institution Name  </td><td>{institutionname}</td></tr>
-                <tr><td>Course Name  </td><td>{coursename}</td></tr>
-                <tr><td>Admission Number  </td><td>{admissionnumber}</td></tr>
-                <tr><td>Address  </td><td>{addressInstitution}</td></tr>
+                <tr>
+                  <td>District </td>
+                  <td>{districtInstitution}</td>
+                </tr>
+                <tr>
+                  <td>Mandal </td>
+                  <td>{mandalInstitution}</td>
+                </tr>
+                <tr>
+                  <td>Institution Name </td>
+                  <td>{institutionname}</td>
+                </tr>
+                <tr>
+                  <td>Course Name </td>
+                  <td>{coursename}</td>
+                </tr>
+                <tr>
+                  <td>Admission Number </td>
+                  <td>{admissionnumber}</td>
+                </tr>
+                <tr>
+                  <td>Address :</td>
+                  <td>{addressInstitution}</td>
+                </tr>
               </tbody>
             </div>
-            </div>
-            <div style={{margin:"auto"}}>
-            <img src={`http://localhost:8080/${imageUrl}`} alt=""/>
-            <Button type="text" onClick={handleEdit} >Edit</Button>
-            <Button type="text" onClick={handleStudentDetailsNext}>NEXT</Button>
-            </div>
+          </div>
+          <div style={{ margin: "auto" }}>
+            <img src={`http://localhost:8080/${imageUrl}`} alt="" />
+            <Button type="text" onClick={handleEdit}>
+              Edit
+            </Button>
+            <Button type="text" onClick={handleStudentDetailsNext}>
+              NEXT
+            </Button>
+          </div>
         </div>
       )}
-    </React.Fragment>
+    </div>
   );
 }

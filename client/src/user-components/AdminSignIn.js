@@ -5,8 +5,11 @@ import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
+import Card from "@mui/material/Card";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
+import "../style.css"
+import { CardContent, Typography } from "@mui/material";
 
 const defaultTheme = createTheme();
 
@@ -15,10 +18,12 @@ function AdminSignIn() {
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState(false);
   const navigate = useNavigate();
+  localStorage.setItem("admin", false);
 
   const handleSignIn = (e) => {
     e.preventDefault();
     if (id === "TSRTC" && password === "admin@123") {
+      localStorage.setItem("admin", true);
       navigate("/admin-portal");
     } else {
       setLoginError(true);
@@ -29,13 +34,15 @@ function AdminSignIn() {
   };
 
   return (
-    <div>
-      <ThemeProvider theme={defaultTheme}>
+    <div  className="admin_signin_div">
+      <Card className="admin-singin-card">
+      <Typography style={{marginTop:"50px", fontSize:"3rem"}} variant="h5">ADMIN</Typography>
+        <CardContent>
         <Container component="main" maxWidth="xs">
           <CssBaseline />
           <Box
             sx={{
-              marginTop: 8,
+              marginTop: 4,
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
@@ -85,7 +92,8 @@ function AdminSignIn() {
             </Box>
           </Box>
         </Container>
-      </ThemeProvider>
+      </CardContent>
+      </Card>
     </div>
   );
 }

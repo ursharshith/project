@@ -1,6 +1,7 @@
 const mongoose = require("mongoose")
 
 const StudentStudyDetailsSchema = mongoose.Schema({
+    email: String,
     sscBoard: String,
     sscType: String,
     sscPassYear: String,

@@ -6,6 +6,7 @@ import { Button, MenuItem } from "@mui/material";
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "../style.css";
 
 export default function StudentPayment() {
   const [showAmount, setShowAmount] = useState(false);
@@ -25,7 +26,7 @@ export default function StudentPayment() {
   const [handleCustom, setHandleCustom] = useState(false);
   const [months, setMonths] = useState(0);
   const [totalAmount, setTotalAmount] = useState(0);
-  const [payButton, setPayButton] = useState(false)
+  const [payButton, setPayButton] = useState(false);
 
   React.useEffect(() => {
     if (passType === "custom") {
@@ -47,7 +48,7 @@ export default function StudentPayment() {
 
   const handleCheckCost = () => {
     setShowAmount(true);
-    
+
     axios
       .get("http://localhost:8080/routeCost")
       .then((result) => setRouteDetails(result.data))
@@ -59,7 +60,7 @@ export default function StudentPayment() {
         })
       )
       .catch((err) => console.log(err));
-    
+
     if (passType === "year") {
       setMonths(12);
       setTotalAmount(routeAmount * months);
@@ -74,137 +75,149 @@ export default function StudentPayment() {
       setTotalAmount(routeAmount * months);
     }
 
-    if(totalAmount !== 0) {
+    if (totalAmount !== 0) {
       setPayButton(true);
     }
   };
 
-  console.log("I am months :", months);
-  console.log("I am cost", routeAmount);
-  console.log("I am total Amount :", totalAmount);
-
   const handlePay = () => {
-    axios
-      .put(`http://localhost:8080/payment/${email}`, { cost })
-      .then((result) => {
-        setPaymentStatus(true);
-        navigate("/student/high-school/payment/status");
-      })
-      .catch((err) => console.log(err));
+    if (`${totalAmount}` === `${cost}`) {
+      axios
+        .put(`http://localhost:8080/payment/${email}`, { cost })
+        .then((result) => {
+          setPaymentStatus(true);
+          navigate("/student/high-school/payment/status");
+        })
+        .catch((err) => console.log(err));
+    } else {
+      alert("Enter correct total amount");
+    }
   };
 
   return (
     <React.Fragment>
-      <div
-        style={{
-          backgroundColor: "white",
-          margin: "auto",
-          width: "75%",
-          padding: "10px",
-        }}
-      >
-        <Typography variant="h6" gutterBottom>
-          Payment method
+      <div className="payment-div">
+        <Typography variant="h6" gutterBottom style={{ fontSize: "2rem" }}>
+          PAYMENT
         </Typography>
-        <Grid container spacing={3}>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            required
+            select
+            id="passtype"
+            name="passtype"
+            label="PASS Type"
+            fullWidth
+            autoComplete="given-name"
+            variant="outlined"
+            onChange={(e) => setPassType(e.target.value)}
+            className="payment-textfield"
+            style={{ marginTop: "10px" }}
+          >
+            <MenuItem value="year">year</MenuItem>
+            <MenuItem value="half">half</MenuItem>
+            <MenuItem value="quarter">quarter</MenuItem>
+            <MenuItem value="custom">custom</MenuItem>
+          </TextField>
+        </Grid>
+
+        {handleCustom && (
           <Grid item xs={12} sm={6}>
             <TextField
               required
-              select
-              id="passtype"
-              name="passtype"
-              label="PASS Type"
+              id="custom"
+              name="custom"
+              label="Custom"
               fullWidth
               autoComplete="given-name"
-              variant="standard"
-              onChange={(e) => setPassType(e.target.value)}
-            >
-              <MenuItem value="year">year</MenuItem>
-              <MenuItem value="half">half</MenuItem>
-              <MenuItem value="quarter">quarter</MenuItem>
-              <MenuItem value="custom">custom</MenuItem>
-            </TextField>
+              variant="outlined"
+              onChange={(e) => setCustom(e.target.value)}
+              className="payment-textfield"
+              style={{ marginTop: "10px", marginBottom: "10px" }}
+            ></TextField>
           </Grid>
-
-          {handleCustom && (
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                id="custom"
-                name="custom"
-                label="Custom"
-                fullWidth
-                autoComplete="given-name"
-                variant="standard"
-                onChange={(e) => setCustom(e.target.value)}
-              ></TextField>
-            </Grid>
-          )}
-        </Grid>
+        )}
         {!paymentStatus && (
           <Typography
             variant="h6"
             gutterBottom
-            style={{ marginTop: "40px", marginBottom: "10px" }}
+            style={{
+              marginTop: "40px",
+              marginBottom: "10px",
+              fontSize: "20px",
+            }}
           >
             <spam>Route Details</spam>
           </Typography>
         )}
-        <Grid container spacing={3}>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              id="fromplace"
-              name="fromplace"
-              label="From Place"
-              fullWidth
-              autoComplete="family-name"
-              variant="standard"
-              onChange={(e) => setFromPlace(e.target.value)}
-            />
+        <Grid item xs={12} sm={6}>
+          <TextField
+            id="fromplace"
+            name="fromplace"
+            label="From Place"
+            fullWidth
+            autoComplete="family-name"
+            variant="outlined"
+            onChange={(e) => setFromPlace(e.target.value)}
+            className="payment-textfield"
+            style={{ marginTop: "10px", marginBottom: "10px" }}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            id="toplace"
+            name="toplace"
+            label="To Place"
+            fullWidth
+            autoComplete="family-name"
+            variant="outlined"
+            onChange={(e) => setToPlace(e.target.value)}
+            className="payment-textfield"
+            style={{ marginTop: "10px", marginBottom: "10px" }}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <Button
+            type="text"
+            onClick={handleCheckCost}
+            variant="outlined"
+            style={{ marginTop: "10px", marginBottom: "10px" }}
+          >
+            Check Cost
+          </Button>
+        </Grid>
+        {!paymentStatus && showAmount && (
+          <Grid item xs={12} sm={12}>
+            <p style={{ textAlign: "center", color: "red" }}>
+              For your pass you need to pay <spam>{totalAmount}</spam> rupees!!!{" "}
+            </p>
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              id="toplace"
-              name="toplace"
-              label="To Place"
-              fullWidth
-              autoComplete="family-name"
-              variant="standard"
-              onChange={(e) => setToPlace(e.target.value)}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Button type="text" onClick={handleCheckCost}>
-              Check Cost
-            </Button>
-          </Grid>
-          {!paymentStatus && showAmount && (
-            <Grid item xs={12} sm={12}>
-              <p style={{ textAlign: "center", color: "red" }}>
-                For your pass you need to pay <spam>{totalAmount}</spam>{" "}
-                rupees!!!{" "}
-              </p>
-            </Grid>
-          )}
+        )}
 
-          <Grid item xs={12} sm={3}>
-            <TextField
-              type="decimal"
-              id="cost"
-              name="cost"
-              label="Total Amount"
-              fullWidth
-              value={totalAmount}
-              onChange={(e) => setCost(e.target.value)}
-            />
-          </Grid>
+        <Grid item xs={12} sm={3}>
+          <TextField
+            type="decimal"
+            id="cost"
+            name="cost"
+            label="Total Amount"
+            fullWidth
+            onChange={(e) => setCost(e.target.value)}
+            className="payment-textfield"
+            style={{ marginTop: "10px", marginBottom: "10px" }}
+          />
+        </Grid>
 
-          <Grid item xs={12} sm={9}></Grid>
-          <Grid item xs={12} sm={3}>
-            <Button type="text" onClick={handlePay} disabled={!payButton}>
-              pay
-            </Button>
-          </Grid>
+        <Grid item xs={12} sm={9}></Grid>
+        <Grid item xs={12} sm={3}>
+          <Button
+            type="text"
+            onClick={handlePay}
+            disabled={!payButton}
+            variant="outlined"
+            style={{ marginTop: "10px", marginBottom: "10px" }}
+          >
+            PAY
+          </Button>
         </Grid>
       </div>
     </React.Fragment>

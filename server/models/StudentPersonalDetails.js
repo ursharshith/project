@@ -2,6 +2,7 @@ const mongoose = require("mongoose")
 
 const StudentPersonalDetailsSchema = new mongoose.Schema({
     name: String,
+    email: String,
     dob: Date,
     gender: String,
     age: Number,
