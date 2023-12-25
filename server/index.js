@@ -22,16 +22,10 @@ const PORT = 8080;
 
 const DB = "mongodb+srv://mahipalkeluth143:uK0niUwwZG9FOCHp@majordb.cb49png.mongodb.net/major_project_db?retryWrites=true&w=majority";
 
-// mongoose.connect("mongodb://127.0.0.1:27017/major-project");
-// mongoose.connect("mongodb+srv://mahipalkeluth143:uK0niUwwZG9FOCHp@majordb.cb49png.mongodb.net/?retryWrites=true&w=majority");
-
 mongoose.connect(DB, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
-// .then(() => {
-//   console.log("ok");
-// }).catch((err) => console.log("sorry"))
 
 mongoose.connection.on('connected', () => {
   console.log('Connected to MongoDB Atlas');
@@ -46,10 +40,7 @@ app.post("/user-signin", (req, res) => {
   UserRegistrationModel.findOne({ email: email }).then((user) => {
     if (user) {
       if (user.password === password) {
-        // res.json(user.firstname, user.firstname);
-        // res.json(user.firstname);
         res.json({status : "Success", firstname: user.firstname, lastname: user.lastname, wallet: user.wallet });
-        // res.json(user)
       } else {
         res.json("password incorrect");
       }
@@ -222,6 +213,14 @@ app.post("/applicaiton_emails", (req, res) => {
 //     res.status(500).send('Internal Server Error');
 //   }
 // })
+
+/*  ------------ ADMIN API'S ------------- */
+
+app.get("/application_mails", (req, res) => {
+  ApplicationMailsModel.find()
+  .then((result) => res.json(result))
+  .catch((err) => res.json(err));
+})
 
 app.get("/", (req, res) => {
   console.log("Hii")

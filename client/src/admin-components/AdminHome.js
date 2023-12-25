@@ -1,11 +1,64 @@
-import React from 'react'
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+// import { styled } from '@mui/material/styles';
+// import Table from '@mui/material/Table';
+// import TableBody from '@mui/material/TableBody';
+// import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+// import TableContainer from '@mui/material/TableContainer';
+// import TableHead from '@mui/material/TableHead';
+// import TableRow from '@mui/material/TableRow';
+// import Paper from '@mui/material/Paper';
+// import { DataGrid } from '@mui/x-data-grid';
+import DoneIcon from '@mui/icons-material/Done';
+import CloseIcon from '@mui/icons-material/Close';
+import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper } from '@mui/material';
 
 const AdminHome = () => {
-  return (
-    <div>
-        
-    </div>
-  )
-}
+  const [mailsData, setMailsData] = useState([]);
 
-export default AdminHome
+    useEffect(() => {
+      axios
+      .get("http://localhost:8080/application_mails")
+      .then((res) => {
+        setMailsData(res.data);
+        console.log(res.data)
+    })
+      .catch((err) => console.log(err));
+    }, [])
+
+
+  return (
+    <div style={{margin:"50px"}}>
+      <h2>USER APPLICATIONS</h2>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Sino</TableCell>
+              <TableCell>Application Name</TableCell>
+              <TableCell>Success</TableCell>
+              <TableCell>Failed</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+          {mailsData && mailsData.length > 0 ? (
+              mailsData.map((data, index) => (
+                <TableRow key={index}>
+                  <TableCell>{index + 1}</TableCell>
+                  <TableCell style={{cursor:"pointer"}}>{data.email}</TableCell>
+                  <TableCell style={{cursor:"pointer"}}><DoneIcon /></TableCell>
+                  <TableCell style={{cursor:"pointer"}}> <CloseIcon /> </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={4}>No data available</TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </div>
+  );
+};
+export default AdminHome;
