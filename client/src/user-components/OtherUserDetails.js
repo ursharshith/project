@@ -6,6 +6,16 @@ import { Button, Input, MenuItem } from "@mui/material";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import {
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  Paper,
+} from "@mui/material";
+import "../style.css";
 
 export default function OtherUserDetails({ filename }) {
   //Other User Details
@@ -41,7 +51,7 @@ export default function OtherUserDetails({ filename }) {
     // formData.append("file", file);
 
     // axios
-    //   .post("http://localhost:8080/uploadPhoto", formData)
+    //   .post("http://localhost:8080/uploadPhoto", formData, {email})
     //   .then((res) => console.log(res.data))
     //   .catch((err) => console.log(err));
 
@@ -71,11 +81,12 @@ export default function OtherUserDetails({ filename }) {
       .then((res) => {})
       .catch((err) => console.log(err));
 
-      axios.post("http://localhost:8080/applicaiton_emails", {
+    axios
+      .post("http://localhost:8080/applicaiton_emails", {
         email,
       })
       .then((res) => {})
-      .catch((err) => console.log(err))
+      .catch((err) => console.log(err));
   };
 
   const handleEdit = () => {
@@ -83,39 +94,25 @@ export default function OtherUserDetails({ filename }) {
   };
 
   const handleNextPreview = () => {
-     if(dob.length <= 0) {
-      alert("Date of Birth is required");
-    }
-    else if(name.length <= 0) {
-      alert("Name is required");
-    }
-    else if(fatherName.length <= 0) {
-      alert("Father name is required");
-    }
-    else if(gender.length <= 0) {
-      alert("Gender is required");
-    }
-    else if(mobileNo.length <= 0) {
-      alert("Mobile number is required");
-    }
-     else {
+    // if (dob.length <= 0) {
+    //   alert("Date of Birth is required");
+    // } else if (name.length <= 0) {
+    //   alert("Name is required");
+    // } else if (fatherName.length <= 0) {
+    //   alert("Father name is required");
+    // } else if (gender.length <= 0) {
+    //   alert("Gender is required");
+    // } else if (mobileNo.length <= 0) {
+    //   alert("Mobile number is required");
+    // } else {
       setReview(true);
-    }
-
-    // setReview(true);
+    // }
   };
 
   return (
-    <React.Fragment>
+    <div className="others-details-div">
       {!review ? (
-        <div
-          style={{
-            backgroundColor: "white",
-            margin: "auto",
-            width: "80%",
-            padding: "10px",
-          }}
-        >
+        <div className="main-sub-div">
           <Typography component="h1" variant="h4" align="center">
             USER PASS Apply
           </Typography>
@@ -123,11 +120,11 @@ export default function OtherUserDetails({ filename }) {
           <Typography
             variant="h6"
             gutterBottom
-            style={{ marginTop: "40px", marginBottom: "10px" }}
+            style={{ margin: "20px 0", fontSize: "20px" }}
           >
             <spam>User Details</spam>
           </Typography>
-          <div style={{ marginLeft: "15px", marginRight: "15px" }}>
+          <div className="sub-divs">
             <Grid container spacing={3}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -137,7 +134,7 @@ export default function OtherUserDetails({ filename }) {
                   label="Name"
                   fullWidth
                   autoComplete="given-name"
-                  variant="standard"
+                  variant="outlined"
                   onChange={(e) => setName(e.target.value)}
                 />
               </Grid>
@@ -149,7 +146,7 @@ export default function OtherUserDetails({ filename }) {
                   label="Father/Guardian's Name"
                   fullWidth
                   autoComplete="family-name"
-                  variant="standard"
+                  variant="outlined"
                   onChange={(e) => setFatherName(e.target.value)}
                 />
               </Grid>
@@ -162,7 +159,7 @@ export default function OtherUserDetails({ filename }) {
                   type="date"
                   fullWidth
                   autoComplete="shipping address-level2"
-                  variant="standard"
+                  variant="outlined"
                   onChange={(e) => setDOB(e.target.value)}
                   InputLabelProps={{
                     shrink: true,
@@ -178,7 +175,7 @@ export default function OtherUserDetails({ filename }) {
                   label="Gender"
                   fullWidth
                   autoComplete="given-name"
-                  variant="standard"
+                  variant="outlined"
                   onChange={(e) => setGender(e.target.value)}
                 >
                   <MenuItem value="Male">Male</MenuItem>
@@ -193,7 +190,7 @@ export default function OtherUserDetails({ filename }) {
                   label="Age"
                   fullWidth
                   autoComplete="family-name"
-                  variant="standard"
+                  variant="outlined"
                   onChange={(e) => setAge(e.target.value)}
                 />
               </Grid>
@@ -204,7 +201,7 @@ export default function OtherUserDetails({ filename }) {
                   label="Aadhar"
                   fullWidth
                   autoComplete="family-name"
-                  variant="standard"
+                  variant="outlined"
                   onChange={(e) => setAadhar(e.target.value)}
                 />
               </Grid>
@@ -217,7 +214,7 @@ export default function OtherUserDetails({ filename }) {
                   label="Mobile No"
                   fullWidth
                   autoComplete="family-name"
-                  variant="standard"
+                  variant="outlined"
                   onChange={(e) => setMobileNo(e.target.value)}
                 />
               </Grid>
@@ -228,7 +225,7 @@ export default function OtherUserDetails({ filename }) {
                   label="Email"
                   fullWidth
                   autoComplete="family-name"
-                  variant="standard"
+                  variant="outlined"
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </Grid>
@@ -241,7 +238,7 @@ export default function OtherUserDetails({ filename }) {
                   type="file"
                   fullWidth
                   autoComplete="family-name"
-                  variant="standard"
+                  variant="outlined"
                   onChange={(e) => setFile(e.target.files[0])}
                   InputLabelProps={{
                     shrink: true,
@@ -250,14 +247,19 @@ export default function OtherUserDetails({ filename }) {
               </Grid>
             </Grid>
           </div>
+          <hr />
           <Typography
             variant="h6"
             gutterBottom
-            style={{ marginTop: "40px", marginBottom: "10px" }}
+            style={{
+              marginTop: "40px",
+              marginBottom: "20px",
+              fontSize: "20px",
+            }}
           >
             <spam>Residential Address Details</spam>
           </Typography>
-          <div style={{ marginLeft: "15px", marginRight: "15px" }}>
+          <div className="sub-divs">
             <Grid container spacing={3}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -268,10 +270,9 @@ export default function OtherUserDetails({ filename }) {
                   label="District"
                   fullWidth
                   autoComplete="given-name"
-                  variant="standard"
+                  variant="outlined"
                   onChange={(e) => setDistrict(e.target.value)}
                 >
-                  {/* <MenuItem value="">SSC Board Type</MenuItem> */}
                   <MenuItem value="Sangareddy">Sangareddy</MenuItem>
                   <MenuItem value="Hyderabad">Hyderabad</MenuItem>
                   <MenuItem value="Nirmal">Nirmal</MenuItem>
@@ -287,7 +288,7 @@ export default function OtherUserDetails({ filename }) {
                   label="Mandal"
                   fullWidth
                   autoComplete="given-name"
-                  variant="standard"
+                  variant="outlined"
                   onChange={(e) => setMandal(e.target.value)}
                 >
                   {/* <MenuItem value="">SSC Board Type</MenuItem> */}
@@ -304,7 +305,7 @@ export default function OtherUserDetails({ filename }) {
                   label="Village"
                   fullWidth
                   autoComplete="family-name"
-                  variant="standard"
+                  variant="outlined"
                   onChange={(e) => setVillage(e.target.value)}
                 />
               </Grid>
@@ -316,7 +317,7 @@ export default function OtherUserDetails({ filename }) {
                   label="Address(complete address)"
                   fullWidth
                   autoComplete="family-name"
-                  variant="standard"
+                  variant="outlined"
                   onChange={(e) => setAddress(e.target.value)}
                 />
               </Grid>
@@ -328,17 +329,20 @@ export default function OtherUserDetails({ filename }) {
                   label="Postal Code"
                   fullWidth
                   autoComplete="family-name"
-                  variant="standard"
+                  variant="outlined"
                   onChange={(e) => setPostalCode(e.target.value)}
                 />
               </Grid>
             </Grid>
-            <Grid item xs={12} sm={12}>
-              <Button type="text" onClick={handleNextPreview}>
-                Next To Preview
-              </Button>
-            </Grid>
           </div>
+          <Button
+            type="text"
+            onClick={handleNextPreview}
+            variant="contained"
+            style={{ marginBottom: "5px" }}
+          >
+            Next To Preview
+          </Button>
         </div>
       ) : (
         <div
@@ -348,8 +352,8 @@ export default function OtherUserDetails({ filename }) {
             flexDirection: "column",
             borderRadius: "10px",
             backgroundColor: "white",
-            height: "90vh",
             padding: "25px",
+            margin: "20px",
           }}
         >
           <Typography
@@ -359,96 +363,131 @@ export default function OtherUserDetails({ filename }) {
               marginTop: "10px",
               marginBottom: "40px",
               textAlign: "center",
+              fontSize: "2rem",
             }}
           >
             <spam>APPLICATION</spam>
           </Typography>
-          {/* <div style={{display:"flex", flex:1}}>
-          {imageData && (
-          <img
-            src={`data:image/jpeg;base64,${Buffer.from(imageData).toString('base64')}`}
-            alt="Your Image"
-          />
-          )}
-          </div> */}
-          <div style={{ display: "flex", flex: 1 }}>
-            <div style={{ flex: 1 }}>
-              <tbody>
-                <th>Student Details</th>
-                <tr>
-                  <td>Name </td>
-                  <td>{name}</td>
-                </tr>
-                <tr>
-                  <td>
-                    Father/
-                    <br />
-                    Guardian Name{" "}
-                  </td>
-                  <td>{fatherName}</td>
-                </tr>
-                <tr>
-                  <td>Date of Birth </td>
-                  <td>{dob}</td>
-                </tr>
-                <tr>
-                  <td>Gender </td>
-                  <td>{gender}</td>
-                </tr>
-                <tr>
-                  <td>Age </td>
-                  <td>{age}</td>
-                </tr>
-                <tr>
-                  <td>Aadhar </td>
-                  <td>{aadhar}</td>
-                </tr>
-                <tr>
-                  <td>Mobile </td>
-                  <td>{mobileNo}</td>
-                </tr>
-                <tr>
-                  <td>Email</td>
-                  <td>{email}</td>
-                </tr>
-              </tbody>
+          <div style={{ display: "flex", flex: 1, margin: "20px" }}>
+            <div style={{ flex: 1, margin:"20px" }}>
+            <TableContainer component={Paper}>
+                <Typography
+                  variant="h5"
+                  gutterBottom
+                  style={{
+                    marginLeft: "25%",
+                    fontSize: "20px",
+                  }}
+                >
+                Student Details
+                </Typography>
+                <Table>
+                  <TableHead style={{ backgroundColor: "#f2f2f2" }}>
+                    <TableRow>
+                      <TableCell>
+                        <strong>Name</strong>
+                      </TableCell>
+                      <TableCell>
+                        <strong>Value</strong>
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell>Name</TableCell>
+                      <TableCell>{name}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Father/ Guardian Name</TableCell>
+                      <TableCell>{fatherName}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Date of Birth</TableCell>
+                      <TableCell>{dob}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Gender</TableCell>
+                      <TableCell>{gender}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Age</TableCell>
+                      <TableCell>{age}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Aadhar</TableCell>
+                      <TableCell>{aadhar}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Mobile No</TableCell>
+                      <TableCell>{mobileNo}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Email</TableCell>
+                      <TableCell>{email}</TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </TableContainer>
             </div>
-            <div style={{ flex: 1 }}>
-              <tbody>
-                <th>Residential Address Details</th>
-                <tr>
-                  <td>District </td>
-                  <td>{district}</td>
-                </tr>
-                <tr>
-                  <td>Mandal </td>
-                  <td>{mandal}</td>
-                </tr>
-                <tr>
-                  <td>Village </td>
-                  <td>{village}</td>
-                </tr>
-                <tr>
-                  <td>Address </td>
-                  <td>{address}</td>
-                </tr>
-                <tr>
-                  <td>postalCode </td>
-                  <td>{postalCode}</td>
-                </tr>
-              </tbody>
+            <div style={{ flex: 1, margin: "20px" }}>
+            <TableContainer component={Paper}>
+                <Typography
+                  variant="h5"
+                  gutterBottom
+                  style={{
+                    marginLeft: "25%",
+                    fontSize: "20px",
+                  }}
+                >
+                   Residential Address Details
+                </Typography>
+                <Table>
+                  <TableHead style={{ backgroundColor: "#f2f2f2" }}>
+                    <TableRow>
+                      <TableCell>
+                        <strong>Name</strong>
+                      </TableCell>
+                      <TableCell>
+                        <strong>Value</strong>
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell>District</TableCell>
+                      <TableCell>{district}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Mandal</TableCell>
+                      <TableCell>{mandal}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Village</TableCell>
+                      <TableCell>{village}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Address</TableCell>
+                      <TableCell>{address}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Postal Code</TableCell>
+                      <TableCell>{postalCode}</TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </TableContainer>
             </div>
           </div>
           <div style={{ margin: "auto" }}>
-            <Button type="text" onClick={handleEdit}>
+            <Button type="text" onClick={handleEdit} style={{marginRight:"8px"}} variant="outlined">
               Edit
             </Button>
-            <Button type="text" onClick={handleStudentDetailsNext}>
+            <Button type="text" onClick={handleStudentDetailsNext} variant="outlined">
               NEXT
             </Button>
           </div>
         </div>
       )}
-    </React.Fragment>
+    </div>
   );
 }

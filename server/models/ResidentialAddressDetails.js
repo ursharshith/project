@@ -1,6 +1,7 @@
 const mongoose = require("mongoose")
 
 const ResidentialAddressDetailsSchema = new mongoose.Schema({
+    email: String,
     district: String,
     mandal: String,
     village: String,

@@ -6,31 +6,18 @@ import { Button, Input, MenuItem } from "@mui/material";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import {
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  Paper,
+} from "@mui/material";
 import "../style.css";
 
 export default function StudentDetails({ filename }) {
-  // const [showAmount, setShowAmount] = useState(false);
-  // const [routeDetails, setRouteDetails] = useState([]);
-  // const [routeAmount, setRouteAmount] = useState(0);
-  // const [fromplace, setFromPlace] = useState("");
-  // const [toplace, setToPlace] = useState("");
-  // const [error, setError] = useState(false); //For input validations
-
-  // const handleCheckCost = () => {
-  //   setShowAmount(true);
-  //   axios
-  //     .get("http://localhost:8080/routeCost")
-  //     .then((result) => setRouteDetails(result.data))
-  //     .then(
-  //       routeDetails.map((route) => {
-  //         if (route.fromplace === fromplace && route.Toplace === toplace) {
-  //           setRouteAmount(route.Amount);
-  //         }
-  //       })
-  //     )
-  //     .catch((err) => console.log(err));
-  // };
-
   //Student 10th details
   const [sscBoard, setSSCBoard] = useState("");
   const [sscType, setSSCType] = useState("");
@@ -96,7 +83,7 @@ export default function StudentDetails({ filename }) {
     formData.append("file", file);
 
     axios
-      .post("http://localhost:8080/uploadPhoto", formData)
+      .post("http://localhost:8080/uploadPhoto", formData, {email})
       .then((res) => console.log(res.data))
       .catch((err) => console.log(err));
 
@@ -128,6 +115,7 @@ export default function StudentDetails({ filename }) {
 
     axios
       .post("http://localhost:8080/residential_address_details", {
+        email,
         district,
         mandal,
         village,
@@ -162,49 +150,51 @@ export default function StudentDetails({ filename }) {
   };
 
   const handleNextPreview = () => {
-    // const formData = new FormData();
-    // formData.append("file", file);
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("email", email)
 
-    // axios
-    //   .post("http://localhost:8080/uploadPhoto", formData)
-    //   .then((res) =>{
-    //      console.log(res)
-    //      setImageUrl(res.data)
-    //      console.log(res.data.image)
-    //      console.log("Image ", imageUrl)
-    //   })
-    //   .catch((err) => console.log(err));
-    if (sscBoard.length <= 0) {
-      alert("SSC Board Type is required");
-    } else if (sscType.length <= 0) {
-      alert("SSC Type is required");
-    } else if (sscPassYear.length <= 0) {
-      alert("SSC Pass Year is required");
-    } else if (sscHallTicket.length <= 0) {
-      alert("SSC Hall Ticket is required");
-    } else if (dob.length <= 0) {
-      alert("Date of Birth is required");
-    } else if (name.length <= 0) {
-      alert("Name is required");
-    } else if (fatherName.length <= 0) {
-      alert("Father name is required");
-    } else if (gender.length <= 0) {
-      alert("Gender is required");
-    } else if (mobileNo.length <= 0) {
-      alert("Mobile number is required");
-    } else if (districtInstitution.length <= 0) {
-      alert("Institution District is required");
-    } else if (mandalInstitution.length <= 0) {
-      alert("Institution Mandal is required");
-    } else if (institutionname.length <= 0) {
-      alert("Institution Name is required");
-    } else if (coursename.length <= 0) {
-      alert("Course name is required");
-    } else if (admissionnumber.length <= 0) {
-      alert("Admission Number is required");
-    } else {
-      setReview(true);
-    }
+    axios
+      .post("http://localhost:8080/uploadPhoto", formData)
+      .then((res) =>{
+         console.log(res)
+         setImageUrl(res.data)
+         console.log(res.data.image)
+         console.log("Image ", imageUrl)
+      })
+      .catch((err) => console.log(err));
+
+    // if (sscBoard.length <= 0) {
+    //   alert("SSC Board Type is required");
+    // } else if (sscType.length <= 0) {
+    //   alert("SSC Type is required");
+    // } else if (sscPassYear.length <= 0) {
+    //   alert("SSC Pass Year is required");
+    // } else if (sscHallTicket.length <= 0) {
+    //   alert("SSC Hall Ticket is required");
+    // } else if (dob.length <= 0) {
+    //   alert("Date of Birth is required");
+    // } else if (name.length <= 0) {
+    //   alert("Name is required");
+    // } else if (fatherName.length <= 0) {
+    //   alert("Father name is required");
+    // } else if (gender.length <= 0) {
+    //   alert("Gender is required");
+    // } else if (mobileNo.length <= 0) {
+    //   alert("Mobile number is required");
+    // } else if (districtInstitution.length <= 0) {
+    //   alert("Institution District is required");
+    // } else if (mandalInstitution.length <= 0) {
+    //   alert("Institution Mandal is required");
+    // } else if (institutionname.length <= 0) {
+    //   alert("Institution Name is required");
+    // } else if (coursename.length <= 0) {
+    //   alert("Course name is required");
+    // } else if (admissionnumber.length <= 0) {
+    //   alert("Admission Number is required");
+    // } else {
+    setReview(true);
+    // }
   };
 
   return (
@@ -310,8 +300,10 @@ export default function StudentDetails({ filename }) {
             }}
           >
             <spam>Student Details</spam>
+            
           </Typography>
           <div className="sub-divs">
+          {/* <img src="http://localhost:8080/uploads/undefined_1703529902891.jpg" alt="images"/> */}
             <Grid container spacing={3}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -420,7 +412,7 @@ export default function StudentDetails({ filename }) {
                 <TextField
                   required
                   id="photo"
-                  name="photo"
+                  name="file"
                   label="Photo"
                   type="file"
                   fullWidth
@@ -642,165 +634,241 @@ export default function StudentDetails({ filename }) {
             flexDirection: "column",
             borderRadius: "10px",
             backgroundColor: "white",
-            height: "90vh",
             padding: "25px",
+            margin: "20px",
           }}
         >
           <Typography
-            variant="h6"
+            variant="h5"
             gutterBottom
             style={{
               marginTop: "10px",
               marginBottom: "40px",
               textAlign: "center",
+              fontSize: "2rem",
             }}
           >
             <spam>APPLICATION</spam>
           </Typography>
-          {/* <div style={{display:"flex", flex:1}}>
-          {imageData && (
-          <img
-            src={`data:image/jpeg;base64,${Buffer.from(imageData).toString('base64')}`}
-            alt="Your Image"
-          />
-          )}
-          </div> */}
+          <img src={file}></img>
           <div style={{ display: "flex", flex: 1 }}>
-            <div style={{ flex: 1 }}>
-              <table>
-                <tbody>
-                  <th>SSC 10th Details</th>
-                  <tr>
-                    <td>SSC Board </td>
-                    <td>{sscBoard}</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      SSC(Regular/
-                      <br />
-                      Supplimentary){" "}
-                    </td>
-                    <td>{sscType}</td>
-                  </tr>
-                  <tr>
-                    <td>SSC Pass Year </td>
-                    <td>{sscPassYear}</td>
-                  </tr>
-                  <tr>
-                    <td>SSC Hall Ticket </td>
-                    <td>{sscHallTicket}</td>
-                  </tr>
-                  <tr>
-                    <td>Date of Birth </td>
-                    <td>{dob}</td>
-                  </tr>
-                </tbody>
-              </table>
+            <div style={{ flex: 1, margin: "20px" }}>
+              <TableContainer component={Paper}>
+                <Typography
+                  variant="h5"
+                  gutterBottom
+                  style={{
+                    marginLeft: "25%",
+                    fontSize: "20px",
+                  }}
+                >
+                  Student Education Details
+                </Typography>
+                <Table>
+                  <TableHead style={{ backgroundColor: "#f2f2f2" }}>
+                    <TableRow>
+                      <TableCell>
+                        <strong>Name</strong>
+                      </TableCell>
+                      <TableCell>
+                        <strong>Value</strong>
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell>SSC Board</TableCell>
+                      <TableCell>{sscBoard}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>SSC(Regular/ Supplimentary)</TableCell>
+                      <TableCell>{sscType}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>SSC Pass Year</TableCell>
+                      <TableCell>{sscPassYear}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>SSC Hall Ticket</TableCell>
+                      <TableCell>{sscHallTicket}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Date of Birth</TableCell>
+                      <TableCell>{dob}</TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </TableContainer>
             </div>
-            <div style={{ flex: 1 }}>
-              <tbody>
-                <th>Student Details</th>
-                <tr>
-                  <td>Name </td>
-                  <td>{name}</td>
-                </tr>
-                <tr>
-                  <td>
-                    Father/
-                    <br />
-                    Guardian Name{" "}
-                  </td>
-                  <td>{fatherName}</td>
-                </tr>
-                <tr>
-                  <td>Date of Birth </td>
-                  <td>{dob}</td>
-                </tr>
-                <tr>
-                  <td>Gender </td>
-                  <td>{gender}</td>
-                </tr>
-                <tr>
-                  <td>Age </td>
-                  <td>{age}</td>
-                </tr>
-                <tr>
-                  <td>Aadhar </td>
-                  <td>{aadhar}</td>
-                </tr>
-                <tr>
-                  <td>Mobile </td>
-                  <td>{mobileNo}</td>
-                </tr>
-                <tr>
-                  <td>Email</td>
-                  <td>{email}</td>
-                </tr>
-              </tbody>
+            <div style={{ flex: 1, margin: "20px" }}>
+              <TableContainer component={Paper}>
+                <Typography
+                  variant="h5"
+                  gutterBottom
+                  style={{
+                    marginLeft: "25%",
+                    fontSize: "20px",
+                  }}
+                >
+                   Residential Address Details
+                </Typography>
+                <Table>
+                  <TableHead style={{ backgroundColor: "#f2f2f2" }}>
+                    <TableRow>
+                      <TableCell>
+                        <strong>Name</strong>
+                      </TableCell>
+                      <TableCell>
+                        <strong>Value</strong>
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell>District</TableCell>
+                      <TableCell>{district}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Mandal</TableCell>
+                      <TableCell>{mandal}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Village</TableCell>
+                      <TableCell>{village}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Address</TableCell>
+                      <TableCell>{address}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Postal Code</TableCell>
+                      <TableCell>{postalCode}</TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </TableContainer>
             </div>
           </div>
           <div style={{ display: "flex", flex: 1 }}>
-            <div style={{ flex: 1 }}>
-              <tbody>
-                <th>Residential Address Details</th>
-                <tr>
-                  <td>District </td>
-                  <td>{district}</td>
-                </tr>
-                <tr>
-                  <td>Mandal </td>
-                  <td>{mandal}</td>
-                </tr>
-                <tr>
-                  <td>Village </td>
-                  <td>{village}</td>
-                </tr>
-                <tr>
-                  <td>Address </td>
-                  <td>{address}</td>
-                </tr>
-                <tr>
-                  <td>postalCode </td>
-                  <td>{postalCode}</td>
-                </tr>
-              </tbody>
+            <div style={{ flex: 1, margin: "20px" }}>
+              <TableContainer component={Paper}>
+                <Typography
+                  variant="h5"
+                  gutterBottom
+                  style={{
+                    marginLeft: "25%",
+                    fontSize: "20px",
+                  }}
+                >
+                Student Details
+                </Typography>
+                <Table>
+                  <TableHead style={{ backgroundColor: "#f2f2f2" }}>
+                    <TableRow>
+                      <TableCell>
+                        <strong>Name</strong>
+                      </TableCell>
+                      <TableCell>
+                        <strong>Value</strong>
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell>Name</TableCell>
+                      <TableCell>{name}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Father/ Guardian Name</TableCell>
+                      <TableCell>{fatherName}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Date of Birth</TableCell>
+                      <TableCell>{dob}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Gender</TableCell>
+                      <TableCell>{gender}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Age</TableCell>
+                      <TableCell>{age}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Aadhar</TableCell>
+                      <TableCell>{aadhar}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Mobile No</TableCell>
+                      <TableCell>{mobileNo}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Email</TableCell>
+                      <TableCell>{email}</TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </TableContainer>
             </div>
-            <div style={{ flex: 1 }}>
-              <tbody>
-                <th>Institution Details</th>
-                <tr>
-                  <td>District </td>
-                  <td>{districtInstitution}</td>
-                </tr>
-                <tr>
-                  <td>Mandal </td>
-                  <td>{mandalInstitution}</td>
-                </tr>
-                <tr>
-                  <td>Institution Name </td>
-                  <td>{institutionname}</td>
-                </tr>
-                <tr>
-                  <td>Course Name </td>
-                  <td>{coursename}</td>
-                </tr>
-                <tr>
-                  <td>Admission Number </td>
-                  <td>{admissionnumber}</td>
-                </tr>
-                <tr>
-                  <td>Address :</td>
-                  <td>{addressInstitution}</td>
-                </tr>
-              </tbody>
+            <div style={{ flex: 1, margin: "20px" }}>
+              <TableContainer component={Paper}>
+                <Typography
+                  variant="h5"
+                  gutterBottom
+                  style={{
+                    marginLeft: "25%",
+                    fontSize: "20px",
+                  }}
+                >
+                  Institution Details
+                </Typography>
+                <Table>
+                  <TableHead style={{ backgroundColor: "#f2f2f2" }}>
+                    <TableRow>
+                      <TableCell>
+                        <strong>Name</strong>
+                      </TableCell>
+                      <TableCell>
+                        <strong>Value</strong>
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell>District</TableCell>
+                      <TableCell>{districtInstitution}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Mandal</TableCell>
+                      <TableCell>{mandalInstitution}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Institution Name</TableCell>
+                      <TableCell>{institutionname}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Course Name</TableCell>
+                      <TableCell>{coursename}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Admission No</TableCell>
+                      <TableCell>{admissionnumber}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Address</TableCell>
+                      <TableCell>{addressInstitution}</TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </TableContainer>
             </div>
           </div>
           <div style={{ margin: "auto" }}>
             <img src={`http://localhost:8080/${imageUrl}`} alt="" />
-            <Button type="text" onClick={handleEdit}>
+            <Button type="text" onClick={handleEdit} variant="outlined" style={{marginRight:"8px"}}>
               Edit
             </Button>
-            <Button type="text" onClick={handleStudentDetailsNext}>
+            <Button type="text" onClick={handleStudentDetailsNext} variant="outlined">
               NEXT
             </Button>
           </div>

@@ -16,7 +16,8 @@ const path = require('path');
 
 const app = express();
 app.use(express.json());
-app.use('/Images', express.static('Images'))
+const staticPath=path.join(__dirname,"./public/");
+app.use(express.static(staticPath));
 app.use(cors());
 const PORT = 8080;
 
@@ -116,38 +117,39 @@ app.put("/payment/:email", async (req, res) => {
 
 // Image Upload and Retrive********
 
-// const storage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, '/images')
-//   },
-//   filename: (req, file, cb) => {
-//     cb(null, file.filename + "_" + Date.now() + path.extname(file.originalname))
-//   }
-// })
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, './public/uploads')
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname))
+  }
+})
 
-const upload = multer({dest: 'images/'})
-// const upload = multer({
-//   storage:storage
-// })
+// const upload = multer({dest: 'images/'})
+const upload = multer({
+  storage:storage
+}).single('file');
 
-// app.post("/uploadPhoto", upload.single('file'), async (req, res) => {
-//   console.log(req.file);
-//   // try {
-//   //   const photo = new PhotoModel({
-//   //     image: req.file.originalname,
-//   //     filename: req.file.filename,
-//   //   });
+app.post("/uploadPhoto", upload, async (req, res) => {
+  console.log(req.file);
+  console.log(req.file.email);
+  // try {
+  //   const photo = new PhotoModel({
+  //     image: req.file.originalname,
+  //     filename: req.file.filename,
+  //   });
 
-//   //   await photo.save();
-//   //   res.status(201).send(req.file.originalname);
-//   // } catch (error) {
-//   //   console.error(error);
-//   //   res.status(500).send('Internal Server Error');
-//   // }
-//   PhotoModel.create({image: req.file.path})
-//   .then((result) => res.json(result))
-//   .catch((err) => res.json(err))
-// })
+  //   await photo.save();
+  //   res.status(201).send(req.file.originalname);
+  // } catch (error) {
+  //   console.error(error);
+  //   res.status(500).send('Internal Server Error');
+  // }
+  PhotoModel.create({email:req.file.email, image: req.file.filename})
+  .then((result) => res.json(result))
+  .catch((err) => res.json(err))
+})
 
 app.get('/getImage', (req, res) => {
   PhotoModel.find()
